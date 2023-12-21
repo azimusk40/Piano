@@ -24,7 +24,7 @@ hauteur_bouton = 150
 
 # Création de la fenêtre
 fenetre = pygame.display.set_mode((largeur, hauteur))
-image = pygame.image.load("image/fond.png").convert_alpha()
+image = loadify("image/fond.png")
 
 pygame.display.set_caption("Piano Game")
 
@@ -54,7 +54,7 @@ while True:
     if event.type == pygame.QUIT:
       pygame.quit()
       sys.exit()
-    
+
     # compteurs des touches enfoncées
     elif event.type == pygame.KEYDOWN:
       for bouton in boutons:
@@ -64,15 +64,8 @@ while True:
           print(
               f"Touche {event.unicode} entrée ({compteurs_touches[event.unicode]} fois)"
           )
-
           # Lecture du son correspondant
           sons[event.unicode].play()
-          # fait que si la touche est enfoncée, il verifit si la note est dans la liste des notes entre 300<x<500 et si oui print("ok")
-          for note in musique:
-            if note.position_x > 300 and note.position_x < 500:
-              print("ok")
-              print(note.position_x)
-            
 
     # Gestion des touches relâchées
     elif event.type == pygame.KEYUP:
@@ -87,29 +80,22 @@ while True:
   fenetre.blit(pygame.transform.scale(image, (largeur, hauteur)), (0, 0))
   pygame.draw.line(fenetre, blanc, (600, 0), (600, hauteur), 2)
   music(fenetre)
+
   # Dessiner les boutons
   for bouton in boutons:
     bouton.dessiner()
-  # Dessiner les notes
 
-  # Ajouter des lignes noires horizontales
+  # Ajouter des lignes blanche horizontales
   for y in range(50, 250, 40):
     pygame.draw.line(fenetre, blanc, (0, y), (largeur, y), 2)
 
-  # ajoute une ligne verticale en x = 500
+  # Dessiner les notes
   for note in musique:
     note.draw()
-
-  # afficher tout les note de la musique
-  liste= []
-  for note in musique:
-    liste.append(note.touche)
-    print(liste)
-
 
   # Mettre à jour l'affichage
   pygame.display.flip()
 
   # Contrôler le nombre d'images par seconde
-  pygame.time.Clock().tick(144)
+  pygame.time.Clock().tick(50)
 
